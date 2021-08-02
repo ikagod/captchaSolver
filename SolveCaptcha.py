@@ -2,6 +2,7 @@ import pytesseract
 import cv2
 from PIL import Image
 import os
+import logging
 
 if os.name == 'nt':
   TESSERACT_PATH = "C:/Users/soludev5/AppData/Local/Programs/Tesseract-OCR/tesseract.exe"  # <------ /!\ CHANGE THIS /!\
@@ -21,7 +22,7 @@ def extractText(textImg):
     data.strip()
     sentence = data[:-3]
 
-    print(sentence)
+    logging.info(sentence)
 
     # format string
     captchaImgTitle = sentence.split('onto')[0].split('Drag the')[-1].strip()
@@ -37,7 +38,7 @@ def solveCaptcha(textImg, captchaImg, collectionPath):
     captchaImgTitle = extractText(textImg)
 
     # print string
-    print(captchaImgTitle)
+    logging.info(captchaImgTitle)
 
     ################################
     # Search for img in collection #
@@ -46,7 +47,7 @@ def solveCaptcha(textImg, captchaImg, collectionPath):
     imgName = captchaImgTitle.lower().replace(' ', '_') + ".png"
     assert os.path.isfile(collectionPath + imgName), "Image not found"
 
-    print("Image found in collection :D")
+    logging.info("Image found in collection :D")
 
     #########################
     # Detect img in Captcha #
@@ -90,6 +91,6 @@ def solveCaptcha(textImg, captchaImg, collectionPath):
             resultReturn = i
             break
 
-    print("img n°", resultReturn+1)
+    logging.info("img n°", resultReturn+1)
 
     return resultReturn
