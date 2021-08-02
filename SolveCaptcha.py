@@ -3,10 +3,11 @@ import cv2
 from PIL import Image
 import os
 
-TESSERACT_PATH = "C:/Users/soludev5/AppData/Local/Programs/Tesseract-OCR/tesseract.exe"  # <------ /!\ CHANGE THIS /!\
-NUMBER_OF_IMAGE_IN_CAPTCHA = 4
+if os.name == 'nt':
+  TESSERACT_PATH = "C:/Users/soludev5/AppData/Local/Programs/Tesseract-OCR/tesseract.exe"  # <------ /!\ CHANGE THIS /!\
+  pytesseract.pytesseract.tesseract_cmd = TESSERACT_PATH
 
-pytesseract.pytesseract.tesseract_cmd = TESSERACT_PATH
+NUMBER_OF_IMAGE_IN_CAPTCHA = 4
 
 def extractText(textImg):
 
@@ -43,10 +44,7 @@ def solveCaptcha(textImg, captchaImg, collectionPath):
     ################################
 
     imgName = captchaImgTitle.lower().replace(' ', '_') + ".png"
-    print(imgName)
-    if not os.path.isfile(collectionPath + imgName):
-        print("Image not found in collection :(")
-        return -1
+    assert os.path.isfile(collectionPath + imgName), "Image not found"
 
     print("Image found in collection :D")
 
